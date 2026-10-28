@@ -32,9 +32,9 @@ The default inputs are:
 - `data/input/functions_definition.json`
 - `data/input/function_calling_tests.json`
 
-The default output is `data/output/function_calling_results.json`, following
-section V.4 of the subject. Other subject examples use different filenames;
-`--output` supports these names explicitly.
+The default output is `data/output/function_calls.json`, as required by
+section V.4 of the subject. Choose another destination with `--output` when
+needed.
 
 ```sh
 uv run python -m src \
@@ -201,7 +201,7 @@ your local evaluation instructions.
 
 ## Resources
 
-- Project subject, version 1.5: chapters IV, V, VI and VIII.
+- Project subject, version 1.7: chapters IV, V, VI and VIII.
 - Qwen3 model documentation: https://huggingface.co/Qwen/Qwen3-0.6B
 - Python JSON: https://docs.python.org/3/library/json.html
 - Pydantic models: https://docs.pydantic.dev/latest/concepts/models/

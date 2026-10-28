@@ -42,7 +42,7 @@ def parse_arguments() -> RunConfig:
     )
     parser.add_argument(
         "--output",
-        default="data/output/function_calling_results.json",
+        default="data/output/function_calls.json",
     )
     parser.add_argument("--max-new-tokens", type=int, default=256)
     parser.add_argument(
