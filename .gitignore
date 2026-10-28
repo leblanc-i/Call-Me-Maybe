@@ -1,20 +1,27 @@
-# Virtual env
+# Virtual environment
 .venv/
 
 # Python cache
 __pycache__/
 *.py[cod]
-.pytest_cache/
 
-# Mypy cache
-.mypy_cache/
+# Testing and coverage
+.pytest_cache/
 .coverage
 htmlcov/
 
-# Output file
+
+# Type checking
+.mypy_cache/
+
+# Generated output
 data/output/
 output/
+
+# Build artifacts
 build/
 dist/
 *.egg-info/
+
+# Operating system
 .DS_Store

@@ -3,10 +3,18 @@ name = "call-me-maybe"
 version = "0.2.0"
 description = "Schema-constrained function calling through the provided SDK"
 requires-python = ">=3.10,<3.14"
-dependencies = ["numpy>=1.26,<2.3", "pydantic>=2.10,<3", "llm-sdk"]
+dependencies = [
+    "numpy>=1.26,<2.3",
+    "pydantic>=2.10,<3",
+    "llm-sdk",
+]
 
 [dependency-groups]
-dev = ["flake8>=7,<8", "mypy>=1.14,<2", "pytest>=8,<10"]
+dev = [
+    "flake8>=7,<8",
+    "mypy>=1.14,<2",
+    "pytest>=8,<10",
+]
 
 [build-system]
 requires = ["hatchling"]
@@ -29,7 +37,10 @@ explicit = true
 
 [tool.mypy]
 python_version = "3.10"
-exclude = ["^llm_sdk/", "^\\.venv/"]
+exclude = [
+    "^llm_sdk/",
+    "^\\.venv/",
+]
 follow_imports = "silent"
 
 [tool.pytest.ini_options]
