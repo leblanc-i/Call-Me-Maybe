@@ -1,0 +1,19 @@
+# Reconstructed packaging: the original SDK manifest was not attached.
+# The supplied Python implementation is copied byte-for-byte, unchanged.
+[project]
+name = "llm-sdk"
+version = "0.0.0"
+requires-python = ">=3.10,<3.14"
+dependencies = [
+    "torch>=2.6,<2.7",
+    "transformers>=4.51,<4.52",
+    "huggingface-hub>=0.30,<1",
+    "accelerate>=1.6,<2",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["llm_sdk"]

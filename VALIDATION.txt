@@ -1,0 +1,31 @@
+Verification date: 2026-10-28
+
+Executed in the sandbox, Python 3.12.8:
+- uv lock --check: PASS
+- uv sync --dry-run: PASS (dependency resolution only)
+- Partial installation using the generated lock: PASS
+  uv sync --no-install-package torch --no-install-package llm-sdk
+  This is NOT a successful full `uv sync` and is not presented as such.
+- flake8 .: PASS (project src/tests; provided SDK excluded)
+- mypy . --warn-return-any --warn-unused-ignores --ignore-missing-imports
+  --disallow-untyped-defs --check-untyped-defs: PASS
+- mypy . --strict --ignore-missing-imports: PASS
+- pytest -q: 78 passed, 1 skipped (optional real vocabulary test)
+- QWEN_VOCAB=/tmp/qwen-vocab.json QWEN_TOKENIZER=/tmp/qwen-tokenizer.json
+  pytest -q: 79 passed
+- ast.parse(feature_version=(3, 10)): PASS for project sources
+- CLI help, missing-input and invalid-budget checks: PASS
+- Official SDK implementation SHA256 compared to attached init.py: IDENTICAL
+  e95f6d6580a49f0806c9eab4d31c86d23ebab94dca9d7331036d966dcd9ff949
+
+Not executed:
+- Complete installation of PyTorch and the SDK in this storage-limited sandbox
+- Qwen model loading or any real-model function calling
+- Real-model accuracy measurement or five-minute performance acceptance
+- Runtime verification on a Python 3.10 interpreter
+
+Scripted logits in unit tests demonstrate masking and parsing correctness,
+NOT natural-language understanding, function-selection accuracy, or LLM speed.
+
+CPU PyTorch is selected for Linux installations to avoid unnecessary CUDA
+packages. The SDK remains responsible for all PyTorch/Transformers imports.
