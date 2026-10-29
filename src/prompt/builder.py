@@ -13,12 +13,15 @@ def build_system_prompt(functions: list[FunctionConfig]) -> str:
         separators=(",", ":"),
     )
     return (
-        "Translate the user's request into a function call only when a "
-        "catalog function can correctly perform the requested task. "
-        "If no function is suitable, abstain and return exactly "
-        '{"name":null,"parameters":{}}. Never choose a merely similar '
-        "function or guess argument values. Otherwise, choose the best "
-        "matching function from the catalog and extract its inputs. "
+        "Choose the catalog function whose description and parameters best "
+        "match the user's intended operation, then extract its inputs. "
+        "If a function can reasonably perform that operation, you must use "
+        "the best matching function even when the request uses different "
+        "wording or asks for the result. Do not abstain just because the "
+        "phrasing is unfamiliar. Abstain only when the requested operation "
+        "is clearly outside every function's capabilities. For that case, "
+        'return exactly {"name":null,"parameters":{}}. Never select an '
+        "unrelated function or invent argument values. "
         "Do not execute the function or calculate its result. "
         "Preserve string arguments exactly, including spaces and case. "
         'For a matching request, return only '
