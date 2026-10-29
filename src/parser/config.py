@@ -81,10 +81,13 @@ class NoMatchCall(BaseModel):
         return self
 
 
-class OutputRecord(FunctionCall):
+class OutputRecord(BaseModel):
     """Represent exactly the three fields required in the output file."""
 
+    model_config = ConfigDict(extra="forbid", strict=True)
     prompt: str
+    name: str
+    parameters: dict[str, Any]
 
 
 class FunctionSet(BaseModel):
