@@ -12,7 +12,7 @@ from typing import Any
 from pydantic import BaseModel, ConfigDict, Field
 
 from src.model.llm import LLM
-from src.parser.config import FunctionCall, OutputRecord
+from src.parser.config import FunctionCall, NoMatchCall, OutputRecord
 from src.parser.parser import Parser
 from src.prompt.builder import build_full_prompt, build_system_prompt
 
@@ -101,7 +101,16 @@ def run(config: RunConfig) -> None:
                     functions,
                     max_new_tokens=config.max_new_tokens,
                 )
-                call = FunctionCall.model_validate_json(raw, strict=True)
+                generated = json.loads(raw)
+                if (
+                    isinstance(generated, dict)
+                    and generated.get("name", object()) is None
+                ):
+                    NoMatchCall.model_validate(generated, strict=True)
+                    raise ValueError(
+                        "No function in the catalog matches this prompt"
+                    )
+                call = FunctionCall.model_validate(generated, strict=True)
                 call.validate_against(functions)
             except Exception as error:
                 raise ValueError(

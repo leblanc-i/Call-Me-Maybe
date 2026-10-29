@@ -21,7 +21,7 @@ class State(BaseModel):
 
     model_config = ConfigDict(frozen=True, extra="forbid", strict=True)
     tasks: tuple[Task, ...]
-    choices: tuple[tuple[str, str], ...] = ()
+    choices: tuple[tuple[str | None, str], ...] = ()
     number: str = "start"
     string: str = "start"
     unicode_left: int = 0
@@ -82,7 +82,10 @@ class Grammar(BaseModel):
         FunctionSet(functions=self.functions)
         return State(
             tasks=(Task(kind="literal", text='{"name":'), Task(kind="name")),
-            choices=tuple((f.name, quoted(f.name)) for f in self.functions),
+            choices=(
+                *((f.name, quoted(f.name)) for f in self.functions),
+                (None, "null"),
+            ),
         )
 
     def _tail(self, name: str) -> tuple[Task, ...]:
@@ -148,6 +151,15 @@ class Grammar(BaseModel):
         for name, rest in choices:
             if not rest:
                 if task.kind == "name":
+                    if name is None:
+                        return State(
+                            tasks=(
+                                Task(
+                                    kind="literal",
+                                    text=',"parameters":{}}',
+                                ),
+                            )
+                        )
                     return State(tasks=self._tail(name))
                 return pop_task(state)
         return state.model_copy(update={"choices": choices})

@@ -13,11 +13,16 @@ def build_system_prompt(functions: list[FunctionConfig]) -> str:
         separators=(",", ":"),
     )
     return (
-        "Translate the user's request into a single function call. "
-        "Choose the best function from the catalog and extract its inputs. "
+        "Translate the user's request into a function call only when a "
+        "catalog function can correctly perform the requested task. "
+        "If no function is suitable, abstain and return exactly "
+        '{"name":null,"parameters":{}}. Never choose a merely similar '
+        "function or guess argument values. Otherwise, choose the best "
+        "matching function from the catalog and extract its inputs. "
         "Do not execute the function or calculate its result. "
         "Preserve string arguments exactly, including spaces and case. "
-        'Return only {"name":"function_name","parameters":{...}}. '
+        'For a matching request, return only '
+        '{"name":"function_name","parameters":{...}}. '
         "For text transformations, the input-text argument must contain "
         "only the text to transform, not the instruction. "
         "Exclude quotation marks used only to delimit that text; "

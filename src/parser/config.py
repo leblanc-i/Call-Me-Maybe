@@ -66,6 +66,21 @@ class FunctionCall(BaseModel):
                 raise ValueError(f"Parameter {key!r} must be {kind}")
 
 
+class NoMatchCall(BaseModel):
+    """Represent an internal abstention when no catalog function fits."""
+
+    model_config = ConfigDict(extra="forbid", strict=True)
+    name: None
+    parameters: dict[str, Any]
+
+    @model_validator(mode="after")
+    def parameters_must_be_empty(self) -> "NoMatchCall":
+        """Do not fabricate arguments for an abstained request."""
+        if self.parameters:
+            raise ValueError("An abstention cannot contain parameters")
+        return self
+
+
 class OutputRecord(FunctionCall):
     """Represent exactly the three fields required in the output file."""
 

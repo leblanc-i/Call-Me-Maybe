@@ -85,8 +85,8 @@ not represented as the official supplied manifest.
 3. `vocab.json` is loaded once. Qwen's byte-level BPE alphabet is inverted into
    actual bytes; raw symbols such as `Ġ` are not copied into generated text.
 4. A byte-prefix trie indexes vocabulary tokens. An incremental grammar follows
-   the complete call: fixed keys, a model-selected function name, its exact
-   argument keys, typed values, punctuation, and final braces.
+   the complete call: fixed keys, a model-selected function name or an explicit
+   null-name abstention, exact argument keys, typed values, and final braces.
 5. For each step, the SDK returns next-token logits. A NumPy vector starts at
    negative infinity; only tokens whose *entire byte sequence* is legal retain
    their original score. The highest-scoring finite allowed token is chosen.
@@ -128,7 +128,10 @@ An exhausted budget, unusable logits, invalid final value or SDK failure produce
 an explicit error. No first-function fallback, guessed `0`, guessed `false` or
 post-hoc repaired call is substituted. A failed batch writes no new partial
 result; an older output file may remain unchanged and must not be mistaken for
-a fresh successful run. Always check the exit code.
+a fresh successful run. If the model abstains because no catalog function fits,
+the CLI reports the prompt index and the reason, then leaves the output file
+unchanged. Successful output records retain the required three-field schema.
+Always check the exit code.
 
 ## Performance analysis
 

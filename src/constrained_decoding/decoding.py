@@ -8,7 +8,7 @@ from pydantic import BaseModel, ConfigDict, Field, PrivateAttr
 
 from src.constrained_decoding.grammar import Grammar, State
 from src.constrained_decoding.vocabulary import Vocabulary
-from src.parser.config import FunctionCall, FunctionConfig
+from src.parser.config import FunctionCall, FunctionConfig, NoMatchCall
 from src.parser.parser import reject_constant, unique_object
 
 
@@ -86,6 +86,9 @@ class Decoder(BaseModel):
             parse_constant=reject_constant,
             object_pairs_hook=unique_object,
         )
+        if isinstance(data, dict) and data.get("name", object()) is None:
+            NoMatchCall.model_validate(data, strict=True)
+            return text
         call = FunctionCall.model_validate(data, strict=True)
         call.validate_against(functions)
         return text
